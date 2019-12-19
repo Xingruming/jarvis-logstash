@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  jarvis-ai-logstash:
+    image: logstash:latest
+    ports:
+      - 8085:8085/udp
+    environment:
+      ES_URL: http://jarvis-ai-elasticsearch:9200
+      ES_USERNAME: elastic
+      ES_PASSWORD: jOqGglFRPF2gJVBr
