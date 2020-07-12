@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jarvis-logstash
+  namespace: wuhan
+  labels:
+    app: jarvis-logstash
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: jarvis-logstash
+      labels:
+        app: jarvis-logstash
+    spec:
+      imagePullSecrets:
+        - name: ali-pull-secret
+      containers:
+        - name: jarvis-logstash
+          image: registry.effyic.com/jarvis-test/jarvis-logstash:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+              name: internal
+              protocol: UDP
+          env:
+            - name: ES_URL
+              value: http://jarvis-elasticsearch:9200
+            - name: ES_USERNAME
+              value: elastic
+            - name: ES_PASSWORD
+              value: jOqGglFRPF2gJVBr
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: jarvis-logstash
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jarvis-logstash
+  namespace: wuhan
+  labels:
+    app: jarvis-logstash
+spec:
+  ports:
+    - name: http
+      port: 8085
+      protocol: UDP
+      targetPort: internal
+  selector:
+    app: jarvis-logstash

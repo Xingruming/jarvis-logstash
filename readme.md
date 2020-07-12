@@ -2,5 +2,7 @@
 
 ## 构建镜像
 ```bash
-./build_image.sh 1.0
+VERSION=1.0.0
+docker build -f Dockerfile . \
+-t registry.effyic.com/jarvis-test/jarvis-logstash:$VERSION
 ```
